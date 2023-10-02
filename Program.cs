@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net.WebSockets;
+using System.Text;
 
 class Program
 {
@@ -33,10 +34,6 @@ class Program
 
         var buffer = new byte[1024]; //1KB
 
-        fluxoDoArquivo.Read(buffer, 0, 1024);
-
-
-
         #region Ler enquanto Byte nao for 0
         //Enquanto o número de bytes for diferente de 0, vamos exibi - los na tela.A partir do momento em que o retorno for 0,
         //não escreveremos mais o buffer
@@ -52,16 +49,19 @@ class Program
         // bytes solicitado se esse número de bytes não estiver disponível no momento, ou
         //zero, se o final do fluxo for atingido
 
-        EscreverBuffer(buffer);
+        fluxoDoArquivo.Close();
+
         Console.ReadLine();
+
     }
 
     // Código anterior omitido
 
     static void EscreverBuffer(byte[] buffer)
     {
-        //decodificando atraves do protocolo utf
-        var utf8 = new UTF8Encoding();
+        //decodificando atraves do protocolo utf (duas formas de usar)
+       // var utf8 = new UTF8Encoding();
+        var utf8 = Encoding.UTF8;
 
         var texto = utf8.GetString(buffer);
         Console.Write(texto);
